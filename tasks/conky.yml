@@ -44,7 +44,7 @@
      
 #TODO automate import themes in conky manager
 
-- name: Copy the conky init script
+- name: Copy the conky startup script
   template: src=conky-startup.sh-{{ ansible_distribution }}.j2 dest={{ conky_home }}/conky-startup.sh mode=0755
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'    
   tags: configure
