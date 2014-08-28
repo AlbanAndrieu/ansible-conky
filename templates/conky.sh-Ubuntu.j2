@@ -1,0 +1,19 @@
+#!/bin/bash
+# {{ ansible_managed }}
+
+if [ -z "$1" ]; then
+  echo "`basename $0` {start|stop}"
+  exit
+fi
+
+CONKY_USER=albandri
+SU=/bin/su
+
+case "$1" in
+start)
+  $SU -l $CONKY_USER --shell=/bin/bash -c "{{ conky_home }}/conky-startup.sh"
+;;
+stop)
+  killall conky
+;;
+esac
