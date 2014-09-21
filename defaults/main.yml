@@ -15,5 +15,6 @@ user: 'albandri' #please override me
 conky_owner                              : "{{ user }}"
 conky_group                              : "{{ conky_owner }}"
 home : '~' #please override me
+conky_owner_home: {{ home }}
 conky_home: '{{ home }}/.conky' 
 conky_themes_url: http://download2041.mediafire.com/c9971ynuzcag/icvmpzhlk7vgejt/default-themes-extra-1.cmtp.7z
