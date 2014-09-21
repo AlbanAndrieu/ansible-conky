@@ -79,12 +79,12 @@
 #tar czvf default-themes-extra-1.tar.gz *
 
 - name: Copy the themes to be processed
-  copy: src=default-themes-extra-1.tar.gz dest={{ ansible_data_path }}/default-themes-extra-1.tar.gz mode=0755 owner=albandri
+  copy: src=default-themes-extra-1.tar.gz dest={{ ansible_data_path }}/default-themes-extra-1.tar.gz mode=0755 owner={{ conky_owner }} group={{ conky_group }}
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags: configure
   
 - name: Unpack conky themes
-  action: command creates={{ conky_home }}/todo chdir={{ conky_home }} tar zxvf {{ ansible_data_path }}/default-themes-extra-1.tar.gz --owner=albandri
+  action: command creates={{ conky_home }}/todo chdir={{ conky_home }} tar zxvf {{ ansible_data_path }}/default-themes-extra-1.tar.gz --owner={{ conky_owner }}
 #  ignore_errors: True
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags: configure

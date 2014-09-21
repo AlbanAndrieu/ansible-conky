@@ -11,6 +11,8 @@ conky_repository_state: present
 #ansible_data_path: /usr/local/src/ansible/data
 ansible_data_path: /tmp
 
+conky_owner                              : "{{ user }}"
+conky_group                              : "{{ conky_owner }}"
 home : '~' #overide me
 conky_home: '{{ home }}.conky' 
 user: 'albandri' 
