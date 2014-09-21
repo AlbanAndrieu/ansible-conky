@@ -11,9 +11,9 @@ conky_repository_state: present
 #ansible_data_path: /usr/local/src/ansible/data
 ansible_data_path: /tmp
 
+user: 'albandri' #please override me
 conky_owner                              : "{{ user }}"
 conky_group                              : "{{ conky_owner }}"
-home : '~' #overide me
-conky_home: '{{ home }}.conky' 
-user: 'albandri' 
+home : '~' #please override me
+conky_home: '{{ home }}/.conky' 
 conky_themes_url: http://download2041.mediafire.com/c9971ynuzcag/icvmpzhlk7vgejt/default-themes-extra-1.cmtp.7z
