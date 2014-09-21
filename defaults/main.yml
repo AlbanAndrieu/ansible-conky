@@ -8,7 +8,8 @@ conky_pkg_state: present
 conky_repository_state: present
 
 # path for ansible to store downloaded or templated data
-ansible_data_path: /usr/local/src/ansible/data
+#ansible_data_path: /usr/local/src/ansible/data
+ansible_data_path: /tmp
 
 home : '~' #overide me
 conky_home: '{{ home }}.conky' 
