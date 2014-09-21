@@ -14,17 +14,27 @@
 - name: Add conky repo (apt)
   apt_repository: repo="ppa:norsetto/ppa" update_cache=yes state={{ conky_repository_state }}
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_manager_enabled )
-  when: "ansible_distribution_version not in ['14.04']"
+  when: "ansible_distribution_version not in ['12.04','14.04']"
+
+- name: Add conky repo (apt)
+  apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_manager_enabled )
+  when: "ansible_distribution_version in ['12.04','14.04']"
+  
+#- name: Add conky techno repo (apt)
+#  apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
+#  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_techno_enabled )
 
 - name: Add conky manager repo (apt)
   apt_repository: repo="ppa:teejee2008/ppa" update_cache=yes state={{ conky_repository_state }}
-  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_manager_enabled )
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
 
 - name: Install conky (apt)
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags: package
   with_items:
+#   - conky
    - conky-all
    - p7zip
 #   - unace
@@ -41,14 +51,24 @@
 #   - arj
 #   - cabextract
 #   - file-roller
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_enabled
 
+- name: Install conky techno (apt)
+  apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  tags: package
+  with_items:
+   - techno-conky
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_techno_enabled
+    
 - name: Install conky manager (apt)
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags: package
   with_items:
    - conky-manager
-
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
+  
 #- name: Download themes if we don't have it
 #  sudo: False
 #  get_url: url={{ conky_themes_url }}  dest={{ conky_home }}/ force=no

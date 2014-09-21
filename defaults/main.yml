@@ -1,6 +1,7 @@
 ---
 conky_enabled: yes                       # Enable module
 conky_manager_enabled: no                # Disbale module
+conky_techno_enabled: no                 # Disbale module
 # Package states: present or installed or latest
 conky_pkg_state: present
 # Repository states: present or absent
