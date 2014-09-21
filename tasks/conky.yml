@@ -1,6 +1,16 @@
 ---
 # This playbook contains common plays that will be run on all nodes.
 
+- name: Check user  
+  user: name={{user}} state=present
+  
+- name: Check user home directory
+  stat: path={{home}}
+  register: home_present
+
+- debug: msg="Path exists and is a directory"
+  when: home_present.stat.isdir is defined and home_present.stat.isdir == true
+  
 - name: Add conky repo (apt)
   apt_repository: repo="ppa:norsetto/ppa" update_cache=yes state={{ conky_repository_state }}
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_manager_enabled )
