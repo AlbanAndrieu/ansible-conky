@@ -1,28 +1,30 @@
-# ansible-vagrant
+ansible-conky
+====================
 
 A role for installing conky.
 
+[![Build Status](https://api.travis-ci.org/AlbanAndrieu/ansible-conky.png?branch=master)](https://travis-ci.org/AlbanAndrieu/ansible-conky)
 
 ## Actions
 
 - Ensures that conky is installed (using `apt`)
 
+Usage example
+------------
 
-## Usage:
-```
-  - name: Install conky
-    hosts: workstation
-    user: root
-  #  connection: local
+    - name: Install conky
+      hosts: workstation
+      user: root
     
-    roles:
-      - conky      
+      roles:
+        - conky      
       
-  vars:      
-      conky_home: '/workspace/users/albandri10/.conky'      
-```
+    vars:      
+        conky_home: '/workspace/users/albandri10/.conky'      
 
-## Sample hosts:
+Hosts example
+------------
+
 ``` 
 [workstation]
 albandri-laptop-misys
@@ -33,6 +35,17 @@ version=10
 home=/workspace/users/{{ user }}{{ version }}/
 ```
 
-## License
+Requirements
+------------
+
+none
+
+Dependencies
+------------
+
+none
+
+License
+-------
 
 MIT
