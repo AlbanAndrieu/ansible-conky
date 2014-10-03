@@ -4,6 +4,6 @@
   roles:
     - ansible-conky
      
-  vars:     
-       user: root
-       home: /root
+#  vars:     
+#       user: root
+#       home: "/root"

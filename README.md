@@ -25,15 +25,13 @@ Usage example
 Hosts example
 ------------
 
-``` 
-[workstation]
-albandri-laptop-misys
+    [workstation]
+    albandri-laptop-misys
 
-[workstation:vars]
-user=albandri
-version=10
-home=/workspace/users/{{ user }}{{ version }}/
-```
+    [workstation:vars]
+    user=albandri
+    version=10
+    home=/workspace/users/{{ user }}{{ version }}/
 
 Requirements
 ------------
@@ -49,3 +47,7 @@ License
 -------
 
 MIT
+
+#### Feedback, bug-reports, requests, ...
+
+Are [welcome](https://github.com/AlbanAndrieu/ansible-webmin/issues)!
