@@ -14,31 +14,35 @@
 - name: conky | Create temporary directory
   shell: mktemp -d
   register: tempdir
-  sudo: true
   tags: conky_setup
 
 - name: conky | Add conky repo
   apt_repository: repo="ppa:norsetto/ppa" update_cache=yes state={{ conky_repository_state }}
+  sudo: true
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version not in ['12.04','14.04'])
   tags: conky_setup
 
 - name: conky | Add conky repo
   apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
+  sudo: true
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version in ['12.04','14.04'])
   tags: conky_setup
 
 #- name: conky | Add conky techno repo
 #  apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
+#  sudo: true
 #  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_techno_enabled )
 #  tags: conky_setup
 
 - name: conky | Add conky manager repo
   apt_repository: repo="ppa:teejee2008/ppa" update_cache=yes state={{ conky_repository_state }}
+  sudo: true
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
   tags: conky_setup
 
 - name: conky | Install conky
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
+  sudo: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags: conky_setup
   with_items:
@@ -63,6 +67,7 @@
 
 - name: conky | Install conky techno
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
+  sudo: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags: conky_setup
   with_items:
@@ -79,8 +84,8 @@
 #tar czvf default-themes-extra-1.tar.gz *
 
 - name: conky | Copy the themes to be processed
-  copy: src=default-themes-extra-1.tar.gz dest={{ conky_dir_tmp }}/default-themes-extra-1.tar.gz mode=0755 owner={{ conky_owner }} group={{ conky_group }}
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  copy: src=default-themes-extra-1.tar.gz dest={{ conky_dir_tmp }}/default-themes-extra-1.tar.gz mode=0755 owner={{ conky_owner }}
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
 
 - name: conky | Create base directory
@@ -89,12 +94,13 @@
     state=directory
     owner="{{conky_owner}}"
     group="{{conky_group}}"
+  ignore_errors: true
   tags: configure
 
 - name: conky | Unpack conky themes
   action: command creates={{ conky_home }}/todo chdir={{ conky_home }} tar zxvf {{ conky_dir_tmp }}/default-themes-extra-1.tar.gz --owner={{ conky_owner }}
-#  ignore_errors: True
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+#  ignore_errors: true
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
 
 - name: conky | Configure conky transparent theme
@@ -127,14 +133,15 @@
 
 - name: conky | Copy the conky startup script
   template: src=conky-startup.sh-{{ ansible_distribution }}.j2 dest={{ conky_home }}/conky-startup.sh mode=0755
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
 
 #TODO start ~/.conky/startconky.sh on startup for instance in .bashrc file
 
 - name: conky | Install conky sensor
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  sudo: true   
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: conky_setup
   with_items:
    - lm-sensors
@@ -151,12 +158,14 @@
 
 - name: conky | Copy the conky init script
   template: src=conky.sh-{{ ansible_distribution }}.j2 dest=/etc/init.d/conky mode=0755
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  sudo: true    
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
 
 - name: conky | Install conky manager
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  sudo: true   
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: conky_setup
   with_items:
    - conky-manager

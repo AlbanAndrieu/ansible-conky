@@ -39,7 +39,9 @@ ansigenome_info:
     Ensures that conky is installed (using `apt`)
 
   usage: |
-    Describe how to use in more detail...
+    Run the following command :
+    
+    `ansible-playbook -i hosts -c local -v conky.yml -vvvv --ask-sudo-pass | tee setup.log`
 
   #custom: |
   #  Any custom output you want after the usage section..
