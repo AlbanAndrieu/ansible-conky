@@ -22,6 +22,8 @@
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version not in ['12.04','14.04'])
   tags: conky_setup
 
+#wrong repo!!!
+#sudo rm /etc/apt/sources.list.d/ppa_launchpad_net_noobslab_noo*
 - name: conky | Add conky repo
   apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
   sudo: true
