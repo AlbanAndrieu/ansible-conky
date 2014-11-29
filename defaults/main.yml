@@ -1,4 +1,3 @@
----
 conky_enabled: yes                       # Enable module
 conky_manager_enabled: no                # Disable module
 conky_techno_enabled: no                 # Disable module
