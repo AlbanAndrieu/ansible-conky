@@ -173,6 +173,13 @@
    - conky-manager
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
 
+
+- name: conky | Remove duplicate entry.
+  file: name=/etc/apt/sources.list.d/{{ item }} state=absent
+  sudo: yes
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) 
+  with_items: conky_repo_files
+
 - name: conky | Start the conky service
   service: name=conky state=started enabled=true
   tags: service

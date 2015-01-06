@@ -21,3 +21,6 @@ conky_dir_tmp: "/tmp" # or override with "{{ tempdir.stdout }} in order to have 
 conky_eth: "eth1"
 conky_wlan: "wlan1"
 conky_transparent: "yes"
+
+conky_repo_files :
+       - "ppa_launchpad_net_noobslab_noobslab_conky_ubuntu.list"
