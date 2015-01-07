@@ -173,7 +173,6 @@
    - conky-manager
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
 
-
 - name: conky | Remove duplicate entry.
   file: name=/etc/apt/sources.list.d/{{ item }} state=absent
   sudo: yes
