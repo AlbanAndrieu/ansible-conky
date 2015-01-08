@@ -42,6 +42,9 @@ List of default variables available in the inventory:
     conky_eth: "eth1"
     conky_wlan: "wlan1"
     conky_transparent: "yes"
+    
+    conky_repo_files :
+           - "ppa_launchpad_net_noobslab_noobslab_conky_ubuntu.list"
 ```
 
 
