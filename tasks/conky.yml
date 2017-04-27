@@ -18,7 +18,7 @@
 
 - name: conky | Add conky repo
   apt_repository: repo="ppa:norsetto/ppa" update_cache=yes state={{ conky_repository_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version not in ['12.04','14.04','16.04'])
   tags: conky_setup
 
@@ -26,25 +26,25 @@
 #sudo rm /etc/apt/sources.list.d/ppa_launchpad_net_noobslab_noo*
 - name: conky | Add conky repo
   apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version in ['12.04','14.04'])
   tags: conky_setup
 
 #- name: conky | Add conky techno repo
 #  apt_repository: repo="deb http://ppa.launchpad.net/noobslab/noobslab-conky/ubuntu {{ansible_lsb.codename}} main" update_cache=yes state={{ conky_repository_state }}
-#  become: true
+#  become: yes
 #  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_techno_enabled )
 #  tags: conky_setup
 
 - name: conky | Add conky manager repo
   apt_repository: repo="ppa:teejee2008/ppa" update_cache=yes state={{ conky_repository_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
   tags: conky_setup
 
 - name: conky | Install conky
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_enabled
   tags: conky_setup
   with_items:
@@ -68,7 +68,7 @@
 
 - name: conky | Install conky techno
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_techno_enabled
   tags: conky_setup
   with_items:
@@ -139,7 +139,7 @@
 
 - name: conky | Install conky sensor
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_sensor_enabled
   tags: conky_setup
   with_items:
@@ -156,13 +156,13 @@
 
 - name: conky | Copy the conky init script
   template: src=conky.sh-{{ ansible_distribution }}.j2 dest=/etc/init.d/conky mode=0755
-  become: true
+  become: yes
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
 
 - name: conky | Install conky manager
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
-  become: true
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
   tags: conky_setup
   with_items:
@@ -182,3 +182,6 @@
 - name: conky | Cleanup temporary directory
   file: name={{ tempdir.stdout }} state=absent
   tags: conky_setup
+  changed_when: false    
+  ignore_errors: "{{ ansible_check_mode }}"    
+  become: yes
