@@ -145,14 +145,13 @@
   with_items:
    - lm-sensors
    - fancontrol
+   - acpi #battery #acpi -V
+#launch gui with
+#sudo psensor   
+   - psensor
 
-#sudo apt-get install lm-sensors
 #sudo sensors-detect
 #sudo service kmod start
-#NOK sudo apt-get install fancontrol
-#sudo apt-get install psensor
-#launch gui with
-#sudo psensor
 
 - name: conky | Copy the conky init script
   template: src=conky.sh-{{ ansible_distribution }}.j2 dest=/etc/init.d/conky mode=0755
