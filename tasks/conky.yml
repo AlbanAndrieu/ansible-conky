@@ -73,6 +73,8 @@
   tags: conky_setup
   with_items:
    - techno-conky
+   
+#More conky themes at https://www.deviantart.com/?q=conky
 
 #- name: conky | Download themes if we don't have it
 #  become: False
@@ -144,11 +146,14 @@
   tags: conky_setup
   with_items:
    - lm-sensors
+   - hddtemp
    - fancontrol
    - acpi #battery #acpi -V
 #launch gui with
 #sudo psensor   
    - psensor
+   - curl 
+   - python-feedparser 
 
 #sudo sensors-detect
 #sudo service kmod start
