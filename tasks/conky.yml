@@ -130,6 +130,8 @@
   with_items:
     - { regexp: 'wlan\d', line: '{{ conky_wlan }}' }
     - { regexp: 'eth\d', line: '{{ conky_eth }}' }
+    - { regexp: '/media/Data', line: '{{ conky_data }}' }    
+    
 #  notify: restart conky
 
 #TODO start ~/.conky/startconky.sh on startup for instance in .bashrc file

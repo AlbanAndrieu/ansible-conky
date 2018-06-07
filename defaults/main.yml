@@ -28,6 +28,8 @@ conky_widget: "conky_seamod"
 
 conky_eth: "eth1"
 conky_wlan: "wlan1"
+#conky_data: "/media/Data"
+conky_data: "/data1"
 conky_transparent: "yes"
 conky_own_window_type: "desktop"
 
