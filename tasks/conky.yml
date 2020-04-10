@@ -36,12 +36,6 @@
 #  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' )  and ( conky_enabled or conky_techno_enabled )
 #  tags: conky_setup
 
-- name: conky | Add conky manager repo
-  apt_repository: repo="ppa:teejee2008/ppa" update_cache=yes state={{ conky_repository_state }}
-  become: yes
-  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ansible_distribution_version is version('17.10', '<=') and conky_manager_enabled
-  tags: conky_setup
-
 - name: conky | Install conky
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
   become: yes
@@ -73,7 +67,7 @@
   tags: conky_setup
   with_items:
    - techno-conky
-   
+
 #More conky themes at https://www.deviantart.com/?q=conky
 
 #- name: conky | Download themes if we don't have it
@@ -119,7 +113,7 @@
   with_items:
     - { regexp: '^own_window_transparent (yes|no)', line: 'own_window_transparent {{ conky_transparent }}' }
     - { regexp: '^own_window_argb_visual (yes|no)', line: 'own_window_argb_visual {{ conky_transparent }}' }
-    - { regexp: '^own_window_type (normal|desktop)', line: 'own_window_type {{ conky_own_window_type }}' }    
+    - { regexp: '^own_window_type (normal|desktop)', line: 'own_window_type {{ conky_own_window_type }}' }
 
 - name: conky | Configure conky network theme
   replace:
@@ -130,8 +124,8 @@
   with_items:
     - { regexp: 'wlan\d', line: '{{ conky_wlan }}' }
     - { regexp: 'eth\d', line: '{{ conky_eth }}' }
-    - { regexp: '/media/Data', line: '{{ conky_data }}' }    
-    
+    - { regexp: '/media/Data', line: '{{ conky_data }}' }
+
 #  notify: restart conky
 
 #TODO start ~/.conky/startconky.sh on startup for instance in .bashrc file
@@ -142,8 +136,8 @@
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ansible_distribution_version is version('19.10', '<=') and conky_sensor_enabled
   tags: conky_setup
   with_items:
-   - python-feedparser 
-   
+   - python-feedparser
+
 - name: conky | Install conky sensor
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
   become: yes
@@ -155,9 +149,9 @@
    - fancontrol
    - acpi #battery #acpi -V
 #launch gui with
-#sudo psensor   
+#sudo psensor
    - psensor
-   - curl 
+   - curl
 
 #sudo sensors-detect
 #sudo service kmod start
@@ -168,10 +162,16 @@
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
 
+- name: conky | Add conky manager repo
+  apt_repository: repo="ppa:teejee2008/ppa" update_cache=yes state={{ conky_repository_state }}
+  become: yes
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ansible_distribution_version is version('19.10', '<=') and conky_manager_enabled
+  tags: conky_setup
+
 - name: conky | Install conky manager
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
   become: yes
-  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ansible_distribution_version is version('19.10', '<=')  and conky_manager_enabled
   tags: conky_setup
   with_items:
    - conky-manager
@@ -183,13 +183,18 @@
   with_items: conky_repo_files
 
 - name: conky | Start the conky service
-  service: name=conky state=started enabled=true
+  service: 
+    name: conky 
+    state: started    
+    enabled: true
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and (ansible_distribution_version not in ['16.04'])
-  tags: service
+  tags: service    
+  become: yes
+  ignore_errors: true
 
 - name: conky | Cleanup temporary directory
   file: name={{ tempdir.stdout }} state=absent
   tags: conky_setup
-  changed_when: false    
-  ignore_errors: "{{ ansible_check_mode }}"    
+  changed_when: false
+  ignore_errors: "{{ ansible_check_mode }}"
   become: yes
