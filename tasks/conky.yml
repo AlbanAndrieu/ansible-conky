@@ -2,10 +2,10 @@
 # This playbook contains common plays that will be run on all nodes.
 
 - name: conky | Check user
-  user: name={{conky_owner}} state=present
+  user: name={{ conky_owner }} state=present
 
 - name: conky | Check user home directory
-  stat: path={{conky_owner_home}}
+  stat: path={{ conky_owner_home }}
   register: home_present
 
 - debug: msg=" conky | Path exists and is a directory"
@@ -19,7 +19,7 @@
 - name: conky | Add conky repo
   apt_repository: repo="ppa:norsetto/ppa" update_cache=yes state={{ conky_repository_state }}
   become: yes
-  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version not in ['12.04','14.04','16.04'])
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version not in ['12.04', '14.04', '16.04']) and ansible_distribution_version is version('19.04', '<=')
   tags: conky_setup
 
 #wrong repo!!!
@@ -39,7 +39,7 @@
 - name: conky | Add conky manager repo
   apt_repository: repo="ppa:teejee2008/ppa" update_cache=yes state={{ conky_repository_state }}
   become: yes
-  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_manager_enabled
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ansible_distribution_version is version('17.10', '<=') and conky_manager_enabled
   tags: conky_setup
 
 - name: conky | Install conky
@@ -139,6 +139,14 @@
 - name: conky | Install conky sensor
   apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
   become: yes
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ansible_distribution_version is version('19.10', '<=') and conky_sensor_enabled
+  tags: conky_setup
+  with_items:
+   - python-feedparser 
+   
+- name: conky | Install conky sensor
+  apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
+  become: yes
   when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_sensor_enabled
   tags: conky_setup
   with_items:
@@ -150,7 +158,6 @@
 #sudo psensor   
    - psensor
    - curl 
-   - python-feedparser 
 
 #sudo sensors-detect
 #sudo service kmod start
