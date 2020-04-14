@@ -99,6 +99,10 @@
   tags: configure
 #  ignore_errors: true
 
+#cd ~ 
+#git clone https://github.com/rpungartnik/MyConkyConfig
+#ln -s ~/MyConkyConfig/conky .conky
+
 - name: conky | Copy the conky startup script
   template: src=conky-startup.sh-{{ ansible_distribution }}.j2 dest={{ conky_home }}/conky-startup.sh mode=0755
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
@@ -152,6 +156,16 @@
 #sudo psensor
    - psensor
    - curl
+
+- name: conky | Install conky
+  apt: pkg={{ item }} update_cache=yes state={{ conky_pkg_state }}
+  become: yes
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and conky_enabled
+  tags: conky_setup
+  with_items:
+   - python3-minimal
+   - curl
+   - jq
 
 #sudo sensors-detect
 #sudo service kmod start

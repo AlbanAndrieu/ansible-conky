@@ -1,4 +1,9 @@
+#!/bin/bash
+set -xv
+
 sleep 20s
 killall conky
-cd "{{ conky_home }}/{{ conky_theme }}"
-conky -c "{{ conky_home }}/{{ conky_theme }}/{{ conky_widget }}" &
+#cd "{{ conky_home }}/{{ conky_theme }}"
+conky -p 20 -c "{{ conky_home }}/{{ conky_theme }}/{{ conky_widget }}" &
+
+exit 0
