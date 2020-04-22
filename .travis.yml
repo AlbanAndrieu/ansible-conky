@@ -67,13 +67,18 @@ install:
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
   
   # Add ansible.cfg to pick up roles path.
-   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  # - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
     
 script:
   # Check ansible version
   - ansible --version
 
   - echo localhost > inventory
+  
+  - pwd
+  - ls -lrta /home/travis/build/
+  - ls -lrta /usr/share/ansible/roles
+  - ls -lrta /home/travis/.ansible/roles
   
   - ansible-playbook -i ./inventory --syntax-check ./conky.yml
   - ansible-playbook -i ./inventory --connection=local --sudo -vvvv ./conky.yml
