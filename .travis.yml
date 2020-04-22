@@ -72,5 +72,5 @@ script:
 
   - echo localhost > inventory
   
-  - sudo ansible-playbook -i inventory --syntax-check conky.yml
-  - sudo ansible-playbook -i inventory --connection=local --sudo -vvvv conky.yml
+  - ansible-playbook -i inventory --syntax-check conky.yml
+  - ansible-playbook -i inventory --connection=local --sudo -vvvv conky.yml
