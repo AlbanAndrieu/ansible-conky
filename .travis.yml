@@ -66,6 +66,9 @@ install:
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
   
+  # Add ansible.cfg to pick up roles path.
+   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+    
 script:
   # Check ansible version
   - ansible --version
