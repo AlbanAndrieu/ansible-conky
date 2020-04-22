@@ -1,24 +1,76 @@
 ---
 
-#language: python
-#python: "2.7"
-
-cache: bundler
-#sudo: false
 sudo: required
-dist: trusty
+dist: travis_lts
+
+language: python
+python:
+  - 3.6
+
+services:
+  - docker
+
+cache:
+  bundler:
+  directories:
+    - $HOME/.cache/pip
 
 env:
-  - ANSIBLE_VERSION=2.3.1.0
+  global:
+    - JENKINS_HOME: /home/jenkins
+    - JENKINS_UID: 3000
+    - DOCKER_GID: 999
+    - secure: MD73NCVzctbVmi2QnQtwtH/ISXN2K0alsLbixoaXl7gr3XvTB4sYB0u+KKtPV46jbeAlQqTRObPfQouPrsLsiNDYcpuN0I5bKsn3TTs4ZHIkD0I2Q9Wh3qNM2fYf9mw3ZUhvXVTEod0W7jzkVGb6kitRCJj8rioKKzvE/YdVsG4=
+  matrix:
+    # - ANSIBLE_VERSION: latest
+    - ANSIBLE_VERSION: 2.7.2
+    - ANSIBLE_VERSION: 2.8.1
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: ANSIBLE_VERSION=2.8.1
+
+branches:
+  only:
+    - master
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/47b10b81867bd0063cf5
+      - https://galaxy.ansible.com/api/v1/notifications/
+    on_success: change
+    on_failure: always
+    on_start: false
+    #  email: false
+    #  hipchat:
+    #    rooms:
+    #      secure: GPUtM44MpgqN/3+TXw4Onp7TpF6YOKpVQkB/sfwGYS1oHUCkp2eb3eGGfJAIUtNxkfFVkdUxM/Bp9GMCnpVjJwRRZP6hYUmlpjCHl8CiK2MjbLvzV65qqBAqYl5bLzKkmmRdPiC31m9ixMe4TiAhJFBK1NoETOP1LkCJ04ezL6U=
+  email:
+    recipients:
+      - alban.andrieu@nabla.mobi
+    on_success: [always|never|change]         # default: change
+    on_failure: [always|never|change]         # default: always
+
+virtualenv:
+  system_site_packages: false
+
+
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq python-apt python-pycurl
+ 
 install:
   # Install Ansible.
-  - sudo pip install ansible==$ANSIBLE_VERSION
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
+  
 script:
-  - sudo ansible --version
-  - export ANSIBLE_ROLES_PATH="../"
+  # Check ansible version
+  - ansible --version
+
   - echo localhost > inventory
+  
   - sudo ansible-playbook -i inventory --syntax-check conky.yml
   - sudo ansible-playbook -i inventory --connection=local --sudo -vvvv conky.yml

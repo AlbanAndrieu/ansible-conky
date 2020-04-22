@@ -19,7 +19,7 @@
 - name: conky | Add conky repo
   apt_repository: repo="ppa:norsetto/ppa" update_cache=yes state={{ conky_repository_state }}
   become: yes
-  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_enabled or conky_manager_enabled ) and (ansible_distribution_version not in ['12.04', '14.04', '16.04']) and ansible_distribution_version is version('19.04', '<=')
+  when: ( ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' ) and ( conky_enabled or conky_manager_enabled ) and ( ansible_distribution_version not in ['12.04', '14.04', '16.04'] ) and ansible_distribution_version is version('19.04', '<=')
   tags: conky_setup
 
 #wrong repo!!!
