@@ -3,7 +3,7 @@
   become: true
 
   roles:
-    - ansible-conky
+    - ./
 
 #  vars:
 #       user: root

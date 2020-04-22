@@ -60,25 +60,23 @@ virtualenv:
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq python-apt python-pycurl
- 
+
 install:
   # Install Ansible.
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
-  
+
   # Add ansible.cfg to pick up roles path.
   # - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-    
+
 script:
   # Check ansible version
   - ansible --version
 
   - echo localhost > inventory
-  
+
   - pwd
   - ls -lrta /home/travis/build/
-  - ls -lrta /usr/share/ansible/roles
-  - ls -lrta /home/travis/.ansible/roles
-  
+
   - ansible-playbook -i ./inventory --syntax-check ./conky.yml
   - ansible-playbook -i ./inventory --connection=local --sudo -vvvv ./conky.yml
