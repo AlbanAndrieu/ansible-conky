@@ -170,8 +170,14 @@
 #sudo sensors-detect
 #sudo service kmod start
 
+# - name: conky | Copy the conky init script
+#   template: src=conky.sh-{{ ansible_distribution }}.j2 dest=/etc/init.d/conky mode=0755
+#   become: yes
+#   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+#   tags: configure
+
 - name: conky | Copy the conky init script
-  template: src=conky.sh-{{ ansible_distribution }}.j2 dest=/etc/init.d/conky mode=0755
+  template: src=conky-systemd.sh-{{ ansible_distribution }}.j2 dest=/etc/systemd/user/conky.service mode=0755
   become: yes
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure

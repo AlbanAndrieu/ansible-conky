@@ -1,0 +1,10 @@
+[Unit]
+Description=conky
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/bin/bash -c '/home/albandrieu/.conky/conky-startup.sh'
+
+
+[Install]
+WantedBy=xsession.target
