@@ -1,7 +1,6 @@
 ---
 # This playbook contains common plays that will be run on all nodes.
 
-- include: conky.yml
+- import_tasks: conky.yml
   when: conky_enabled 
   tags: [conky]
-  
