@@ -9,7 +9,6 @@
 
     - debug: msg="{{ user.msg }}"
 
-  tasks:
     - debug: msg="Hostname is {{ ansible_hostname }}"
 
 - hosts: localhost
