@@ -32,7 +32,7 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-added-large-files
-        args: ['--maxkb=123']
+        args: ["--maxkb=123"]
         exclude: >
           (?x)^(
             .pnp.cjs|
@@ -93,9 +93,16 @@ repos:
       - id: requirements-txt-fixer
       - id: sort-simple-yaml
       - id: file-contents-sorter
+  - repo: https://github.com/asottile/add-trailing-comma
     rev: v3.1.0
     hooks:
       - id: add-trailing-comma
+  # - repo: https://github.com/willthames/ansible-lint.git
+  #   rev: v24.2.2
+  #   hooks:
+  #     - id: ansible-lint
+  #       files: \.(yaml|yml)$
+  #       exclude: ".travis.yml"
   - repo: https://github.com/doublify/pre-commit-hindent.git
     rev: b3680b6ebf9f7cf29b19307f246adef66756feef
     hooks:
@@ -104,6 +111,7 @@ repos:
     rev: 1.0.5
     hooks:
       - id: shell-lint
+        # entry: pre_commit_hooks/shell-lint.sh -x
         args: [-x]
         exclude: >
           (?x)^(
@@ -132,6 +140,12 @@ repos:
     rev: v0.1.2
     hooks:
       - id: encryption-check
+        exclude: >
+          (?x)^(
+              .github/workflows/vault.yml|
+              infra/terraform/nomad/jobs/vault-backup.nomad|
+              infra/terraform/vault/.*|
+          )$
   - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
     rev: v1.1.2
     hooks:
