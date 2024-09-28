@@ -177,7 +177,7 @@
 #   tags: configure
 
 - name: conky | Copy the conky init script
-  template: src=conky-systemd.sh-{{ ansible_distribution }}.j2 dest=/etc/systemd/user/conky.service mode=0755
+  template: src=conky-systemd.sh-{{ ansible_distribution }}.j2 dest=/etc/systemd/user/conky.service mode=0644
   become: yes
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
   tags: configure
