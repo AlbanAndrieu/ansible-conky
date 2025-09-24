@@ -1,20 +1,28 @@
 ---
+- hosts: all
+  tasks:
+    - name: check that i have log file for all hosts on my local machine
+      stat: path=/var/log/hosts/{{inventory_hostname}}.log
+      delegate_to: localhost
+
 - hosts: localhost
   gather_facts: yes
-  
+
   tasks:
     - name: run_command
-      action: run_cmd cmd=date
+      # ansible.builtin.command: date
+      ansible.builtin.shell: date
+      delegate_to: localhost
       register: user
 
-    - debug: msg="{{ user.msg }}"
+    - debug: msg="{{ user.stdout }}"
 
     - debug: msg="Hostname is {{ ansible_hostname }}"
 
 - hosts: localhost
   become: true
   gather_facts: true
-  
+
   roles:
     - ./
 

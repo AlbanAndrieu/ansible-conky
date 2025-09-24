@@ -1,6 +1,9 @@
 [Unit]
 Description=conky
 PartOf=graphical-session.target
+# https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+After=default.target network-online.target nss-lookup.target docker.socket firewalld.service containerd.service time-set.target autofs.service iscsid.service folder.mount
+Wants=network-online.target default.target
 
 [Service]
 #Type=notify
@@ -8,12 +11,18 @@ Type=simple
 User=albandrieu
 # Group=sudo
 WorkingDirectory=/home/albandrieu/.conky
+ExecStartPre=/bin/sleep 5
 ExecStart=/bin/bash -c '/home/albandrieu/.conky/conky-startup.sh'
 ExecReload=/bin/kill --signal HUP $MAINPID
+Environment=DISPLAY=:1
+# Restart=on-failure
+Restart=always
+RestartSec=3
+
 KillMode=process
 KillSignal=SIGTERM
-Restart=on-failure
 LimitNOFILE=65536
 
 [Install]
-WantedBy=xsession.target
+WantedBy=default.target
+# WantedBy=xsession.target

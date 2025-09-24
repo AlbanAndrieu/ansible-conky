@@ -91,7 +91,12 @@ conky_repo_files :
 Run the following command :
 
 ```
-ansible-playbook -i hosts -c local conky.yml -vvvv --ask-become-pass --become | tee setup.log
+ansible -m setup localhost
+cd roles
+ln -s ../ albanandrieu.conky
+cd ..
+ansible-playbook -i hosts -c local conky.yml -vvv --ask-become-pass --become | tee setup.log
+ANSIBLE_NOCOLOR=True && ansible-playbook -i hosts -c local -v conky.yml -vvv --ask-become-pass --become > conky.log  2>&1
 ```
 
 ## Testing
